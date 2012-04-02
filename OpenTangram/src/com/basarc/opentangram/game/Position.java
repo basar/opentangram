@@ -3,7 +3,7 @@ package com.basarc.opentangram.game;
 import com.basarc.opentangram.util.Utils;
 
 /**
- * This class can be thought as a Vector and it contains common operations.
+ * This class can be considered as a vector and contains common operations.
  * 
  * @author basar
  * 
