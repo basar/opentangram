@@ -94,26 +94,35 @@ public class Position {
 	}
 
 	/**
-	 * Calculates vector magnitude
+	 * Add another vector to this vector
 	 * 
-	 * @return length of vector
+	 * @param p
 	 */
-	public double magnitude() {
-		return magnitude(new Position(0, 0), this);
+	public void add(Position p) {
+		this.x = this.x + p.getX();
+		this.y = this.y + p.getY();
 	}
 
 	/**
 	 * Calculates vector magnitude
 	 * 
+	 * @return magnitude of the vector
+	 */
+	public double magnitude() {
+		return distance(new Position(0, 0), this);
+	}
+
+	/**
+	 * Calculates distance
+	 * 
 	 * @param p1 started point
 	 * @param p2 finished point (or vice versa)
-	 * @return length of vector
+	 * @return magnitude of the vector
 	 */
-	public static double magnitude(Position p1, Position p2) {
+	public static double distance(Position p1, Position p2) {
 		double xMagnitude = Math.abs(p1.x - p2.x);
 		double yMagnitude = Math.abs(p1.y - p2.y);
-		return Utils.sqrt(Math.abs(xMagnitude * xMagnitude + yMagnitude
-				* yMagnitude));
+		return Utils.sqrt(xMagnitude * xMagnitude + yMagnitude * yMagnitude);
 	}
 
 	/**
@@ -132,6 +141,34 @@ public class Position {
 	 */
 	public double getY() {
 		return this.y;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Position other = (Position) obj;
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+			return false;
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+			return false;
+		return true;
 	}
 
 }

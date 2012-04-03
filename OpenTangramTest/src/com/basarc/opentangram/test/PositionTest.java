@@ -40,4 +40,15 @@ public class PositionTest extends TestCase {
 
 	}
 
+	public void testEquals() {
+
+		Position p1 = new Position(4, 4);
+		Position p2 = new Position(4, 4);
+		assertEquals(p1.equals(p2), true);
+
+		Position p3 = new Position(1, 0);
+		assertEquals(p3.equals(p1), false);
+
+	}
+
 }
