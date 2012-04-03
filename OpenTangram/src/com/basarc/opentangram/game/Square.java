@@ -9,7 +9,7 @@ public class Square extends Shape {
 
 	public Square(Position p) {
 		this();
-		moveTo(p);
+		changePosition(p);
 	}
 
 	public Square(double x, double y) {
@@ -17,7 +17,7 @@ public class Square extends Shape {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		vertices.add(new Position(1, 1));
 		vertices.add(new Position(-1, 1));
 		vertices.add(new Position(-1, -1));

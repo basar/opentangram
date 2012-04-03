@@ -94,7 +94,7 @@ public class Position {
 	}
 
 	/**
-	 * Add another vector to this vector
+	 * Adds another vector to this vector
 	 * 
 	 * @param p
 	 */
