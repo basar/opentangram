@@ -12,16 +12,16 @@ public class Square extends Shape {
 		changePosition(p);
 	}
 
-	public Square(double x, double y) {
+	public Square(float x, float y) {
 		this(new Position(x, y));
 	}
 
 	@Override
 	protected void initialize() {
-		vertices.add(new Position(1, 1));
-		vertices.add(new Position(-1, 1));
-		vertices.add(new Position(-1, -1));
-		vertices.add(new Position(1, -1));
+		createVertex(1, 1);
+		createVertex(-1, 1);
+		createVertex(-1, -1);
+		createVertex(1, -1);
 	}
 
 }

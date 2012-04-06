@@ -2,7 +2,10 @@ package com.basarc.opentangram.game;
 
 import java.util.ArrayList;
 
+import com.basarc.opentangram.util.Utils;
+
 /**
+ * The class represents a positive convex polygon
  * 
  * @author basar
  * 
@@ -24,15 +27,17 @@ public abstract class Shape {
 	 */
 	public Shape() {
 		vertices = new ArrayList<Position>();
-		this.center = new Position(0, 0);
+		this.center = new Position(0f, 0f);
 	}
+
+	protected abstract void initialize();
 
 	/**
 	 * Rotates shape around its center
 	 * 
 	 * @param angleInDegree degree of the rotation
 	 */
-	public void rotate(double angleInDegree) {
+	public void rotate(float angleInDegree) {
 		for (Position p : vertices) {
 			p.rotate(center, angleInDegree);
 		}
@@ -43,7 +48,7 @@ public abstract class Shape {
 	 * 
 	 * @param scale
 	 */
-	public void scale(double scale) {
+	public void scale(float scale) {
 		for (Position p : vertices) {
 			p.scale(scale);
 		}
@@ -55,28 +60,65 @@ public abstract class Shape {
 	 * @param newPos
 	 */
 	public void changePosition(Position newPos) {
-		double x = newPos.getX() - center.getX();
-		double y = newPos.getY() - center.getY();
+
+		float x = newPos.getX() - center.getX();
+		float y = newPos.getY() - center.getY();
 		this.center = newPos;
 		Position directionVector = new Position(x, y);
 		for (Position p : vertices) {
 			p.add(directionVector);
 		}
+
 	}
 
+	/**
+	 * moves shape towards the given direction vector
+	 * 
+	 * @param directionVector
+	 */
 	public void moveTo(Position directionVector) {
 		this.center.add(directionVector);
 		for (Position p : vertices) {
 			p.add(directionVector);
 		}
+	}
 
+	/**
+	 * returns area of the shape using following the formula
+	 * http://mathworld.wolfram.com/PolygonArea.html
+	 * 
+	 * @return
+	 */
+	public float calculateArea() {
+
+		int size = vertices.size();
+		float sum1 = 0;
+		float sum2 = 0;
+
+		for (int i = 0; i < size; i++) {
+			sum1 = sum1
+					+ (getVertex(i).getX() * getVertex((i + 1) % size).getY());
+			sum2 = sum2
+					+ (getVertex(i).getY() * getVertex((i + 1) % size).getX());
+		}
+		sum1 = Utils.round(sum1);
+		sum2 = Utils.round(sum2);
+		return (0.5f * (sum1 - sum2));
+	}
+
+	protected void createVertex(float x, float y) {
+		vertices.add(new Position(x, y));
+	}
+
+	protected void createVertex(int index, float x, float y) {
+		vertices.add(index, new Position(x, y));
 	}
 
 	public ArrayList<Position> getVertices() {
 		return vertices;
 	}
 
-	public Position getVertice(int index) {
+	public Position getVertex(int index) {
 		if (index > vertices.size()) {
 			throw new IllegalArgumentException(index
 					+ " is bigger than list size");
@@ -87,8 +129,6 @@ public abstract class Shape {
 	public Position getCenter() {
 		return center;
 	}
-
-	protected abstract void initialize();
 
 	@Override
 	public int hashCode() {
@@ -123,7 +163,7 @@ public abstract class Shape {
 	}
 
 	/**
-	 * Helper method that is used to compare two vertice list
+	 * Helper method that is used to compare two vertices list
 	 * 
 	 * @param other
 	 * @return

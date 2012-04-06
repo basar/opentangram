@@ -20,10 +20,10 @@ public class PositionTest extends TestCase {
 		assertEquals(p2.getX() == 1, true);
 		assertEquals(p2.getY() == 3, true);
 
-		Position p3 = new Position(1.2, 1.2);
+		Position p3 = new Position(1.2f, 1.2f);
 		p3.rotate(90);
-		assertEquals(p3.getX() == -1.2, true);
-		assertEquals(p3.getY() == 1.2, true);
+		assertEquals(p3.getX() == -1.2f, true);
+		assertEquals(p3.getY() == 1.2f, true);
 
 		Position p4 = new Position(3, -3);
 		p4.rotate(135);

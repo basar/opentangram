@@ -4,32 +4,38 @@ import java.math.BigDecimal;
 
 public class Utils {
 
-	private static final int decimalRound = 6;
-
 	private Utils() {
 	}
 
-	public static double cos(double theta) {
-		double result = 0;
-		double rad = Math.toRadians(theta);
-		result = Math.cos(rad);
+	public static float cos(float theta) {
+		float result = 0;
+		float rad = (float) Math.toRadians(theta);
+		result = (float) Math.cos(rad);
 		return round(result);
 	}
 
-	public static double sin(double theta) {
-		double result = 0;
-		double rad = Math.toRadians(theta);
-		result = Math.sin(rad);
+	public static float sin(float theta) {
+		float result = 0;
+		float rad = (float) Math.toRadians(theta);
+		result = (float) Math.sin(rad);
 		return round(result);
 	}
 
-	public static double sqrt(double value) {
-		return round(Math.sqrt(value));
+	public static float sqrt(float value) {
+		return (float) Math.sqrt(value);
 	}
 
-	public static double round(double value) {
-		BigDecimal bd = new BigDecimal(value);
-		bd = bd.setScale(decimalRound, BigDecimal.ROUND_HALF_DOWN);
-		return bd.doubleValue();
+	public static float round(float value) {
+
+		float roundedValue = Math.round(value);
+		float fark = (float) Math.abs(value - roundedValue);
+
+		BigDecimal bd = new BigDecimal(Float.toString(fark));
+		bd = bd.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+
+		if (bd.floatValue() == 0)
+			return roundedValue;
+		else
+			return value;
 	}
 }

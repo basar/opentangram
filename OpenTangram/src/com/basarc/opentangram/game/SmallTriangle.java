@@ -14,14 +14,14 @@ public class SmallTriangle extends Shape {
 		changePosition(p);
 	}
 
-	public SmallTriangle(double x, double y) {
+	public SmallTriangle(float x, float y) {
 		this(new Position(x, y));
 	}
 
 	@Override
 	protected void initialize() {
-		vertices.add(new Position(Utils.sqrt(2), 0));
-		vertices.add(new Position(0, Utils.sqrt(2)));
-		vertices.add(new Position(-Utils.sqrt(2), 0));
+		createVertex(Utils.sqrt(2), 0);
+		createVertex(-Utils.sqrt(2), 0);
+		createVertex(0, -Utils.sqrt(2));
 	}
 }

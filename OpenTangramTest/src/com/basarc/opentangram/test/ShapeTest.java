@@ -2,6 +2,9 @@ package com.basarc.opentangram.test;
 
 import junit.framework.TestCase;
 
+import com.basarc.opentangram.game.BigTriangle;
+import com.basarc.opentangram.game.MediumTriangle;
+import com.basarc.opentangram.game.Parallelogram;
 import com.basarc.opentangram.game.Position;
 import com.basarc.opentangram.game.SmallTriangle;
 import com.basarc.opentangram.game.Square;
@@ -14,19 +17,19 @@ public class ShapeTest extends TestCase {
 		Square sq = new Square();
 		sq.rotate(90);
 
-		assertEquals(sq.getVertice(0).equals(new Position(-1, 1)), true);
-		assertEquals(sq.getVertice(1).equals(new Position(-1, -1)), true);
-		assertEquals(sq.getVertice(2).equals(new Position(1, -1)), true);
-		assertEquals(sq.getVertice(3).equals(new Position(1, 1)), true);
+		assertEquals(sq.getVertex(0).equals(new Position(-1, 1)), true);
+		assertEquals(sq.getVertex(1).equals(new Position(-1, -1)), true);
+		assertEquals(sq.getVertex(2).equals(new Position(1, -1)), true);
+		assertEquals(sq.getVertex(3).equals(new Position(1, 1)), true);
 
 		SmallTriangle st = new SmallTriangle();
 		st.rotate(270);
 
-		assertEquals(st.getVertice(0).equals(new Position(0, -Utils.sqrt(2))),
+		assertEquals(st.getVertex(0).equals(new Position(0, -Utils.sqrt(2))),
 				true);
-		assertEquals(st.getVertice(1).equals(new Position(Utils.sqrt(2), 0)),
+		assertEquals(st.getVertex(1).equals(new Position(0, Utils.sqrt(2))),
 				true);
-		assertEquals(st.getVertice(2).equals(new Position(0, Utils.sqrt(2))),
+		assertEquals(st.getVertex(2).equals(new Position(-Utils.sqrt(2), 0)),
 				true);
 
 	}
@@ -36,10 +39,10 @@ public class ShapeTest extends TestCase {
 		Square sq = new Square();
 		sq.changePosition(new Position(5, 5));
 
-		assertEquals(sq.getVertice(0).equals(new Position(6, 6)), true);
-		assertEquals(sq.getVertice(1).equals(new Position(4, 6)), true);
-		assertEquals(sq.getVertice(2).equals(new Position(4, 4)), true);
-		assertEquals(sq.getVertice(3).equals(new Position(6, 4)), true);
+		assertEquals(sq.getVertex(0).equals(new Position(6, 6)), true);
+		assertEquals(sq.getVertex(1).equals(new Position(4, 6)), true);
+		assertEquals(sq.getVertex(2).equals(new Position(4, 4)), true);
+		assertEquals(sq.getVertex(3).equals(new Position(6, 4)), true);
 
 	}
 
@@ -48,10 +51,10 @@ public class ShapeTest extends TestCase {
 		Square sq = new Square(-2, 2);
 		sq.moveTo(new Position(1, 1));
 
-		assertEquals(sq.getVertice(0).equals(new Position(0, 4)), true);
-		assertEquals(sq.getVertice(1).equals(new Position(-2, 4)), true);
-		assertEquals(sq.getVertice(2).equals(new Position(-2, 2)), true);
-		assertEquals(sq.getVertice(3).equals(new Position(0, 2)), true);
+		assertEquals(sq.getVertex(0).equals(new Position(0, 4)), true);
+		assertEquals(sq.getVertex(1).equals(new Position(-2, 4)), true);
+		assertEquals(sq.getVertex(2).equals(new Position(-2, 2)), true);
+		assertEquals(sq.getVertex(3).equals(new Position(0, 2)), true);
 
 	}
 
@@ -70,4 +73,22 @@ public class ShapeTest extends TestCase {
 
 	}
 
+	public void testArea() {
+
+		Square sq = new Square();
+		assertEquals(sq.calculateArea() == 4, true);
+
+		SmallTriangle st = new SmallTriangle();
+		assertEquals(st.calculateArea() == 2, true);
+
+		BigTriangle bt = new BigTriangle();
+		assertEquals(bt.calculateArea() == 8, true);
+
+		Parallelogram po = new Parallelogram();
+		assertEquals(po.calculateArea() == 4, true);
+
+		MediumTriangle mt = new MediumTriangle();
+		assertEquals(mt.calculateArea() == 4, true);
+
+	}
 }

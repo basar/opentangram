@@ -13,11 +13,11 @@ public class Position {
 	/**
 	 * x coordinate
 	 */
-	private double x;
+	private float x;
 	/**
 	 * y coordinate
 	 */
-	private double y;
+	private float y;
 
 	/**
 	 * Creates new position object. x=0 and y=0
@@ -32,7 +32,7 @@ public class Position {
 	 * @param x value of x coordinate
 	 * @param y value of y coordinate
 	 */
-	public Position(double x, double y) {
+	public Position(float x, float y) {
 		setPosition(x, y);
 	}
 
@@ -47,7 +47,7 @@ public class Position {
 	 * @param x value of x coordinate
 	 * @param y value of y coordinate
 	 */
-	public void setPosition(double x, double y) {
+	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -57,7 +57,7 @@ public class Position {
 	 * 
 	 * @param angleInDegree degree of the rotation
 	 */
-	public void rotate(double angleInDegree) {
+	public void rotate(float angleInDegree) {
 		rotate(new Position(0, 0), angleInDegree);
 	}
 
@@ -67,10 +67,10 @@ public class Position {
 	 * @param center center point
 	 * @param angleInDegree degree of the rotation
 	 */
-	public void rotate(Position center, double angleInDegree) {
+	public void rotate(Position center, float angleInDegree) {
 
-		double cosTheta = Utils.cos(angleInDegree);
-		double sinTheta = Utils.sin(angleInDegree);
+		float cosTheta = Utils.cos(angleInDegree);
+		float sinTheta = Utils.sin(angleInDegree);
 
 		Position temp = new Position(this);
 		temp.x = temp.x - center.x;
@@ -88,7 +88,7 @@ public class Position {
 	 * 
 	 * @param scale Scale value
 	 */
-	public void scale(double scale) {
+	public void scale(float scale) {
 		this.x = this.x * scale;
 		this.y = this.y * scale;
 	}
@@ -108,7 +108,7 @@ public class Position {
 	 * 
 	 * @return magnitude of the vector
 	 */
-	public double magnitude() {
+	public float magnitude() {
 		return distance(new Position(0, 0), this);
 	}
 
@@ -119,9 +119,9 @@ public class Position {
 	 * @param p2 finished point (or vice versa)
 	 * @return magnitude of the vector
 	 */
-	public static double distance(Position p1, Position p2) {
-		double xMagnitude = Math.abs(p1.x - p2.x);
-		double yMagnitude = Math.abs(p1.y - p2.y);
+	public static float distance(Position p1, Position p2) {
+		float xMagnitude = Math.abs(p1.x - p2.x);
+		float yMagnitude = Math.abs(p1.y - p2.y);
 		return Utils.sqrt(xMagnitude * xMagnitude + yMagnitude * yMagnitude);
 	}
 
@@ -130,7 +130,7 @@ public class Position {
 	 * 
 	 * @return
 	 */
-	public double getX() {
+	public float getX() {
 		return this.x;
 	}
 
@@ -139,7 +139,7 @@ public class Position {
 	 * 
 	 * @return
 	 */
-	public double getY() {
+	public float getY() {
 		return this.y;
 	}
 
@@ -147,11 +147,8 @@ public class Position {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + Float.floatToIntBits(x);
+		result = prime * result + Float.floatToIntBits(y);
 		return result;
 	}
 
@@ -164,9 +161,9 @@ public class Position {
 		if (getClass() != obj.getClass())
 			return false;
 		Position other = (Position) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+		if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
 			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+		if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
 			return false;
 		return true;
 	}
