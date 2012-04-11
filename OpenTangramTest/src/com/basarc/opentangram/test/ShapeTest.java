@@ -8,7 +8,6 @@ import com.basarc.opentangram.game.Parallelogram;
 import com.basarc.opentangram.game.Position;
 import com.basarc.opentangram.game.SmallTriangle;
 import com.basarc.opentangram.game.Square;
-import com.basarc.opentangram.util.Utils;
 
 public class ShapeTest extends TestCase {
 
@@ -25,12 +24,8 @@ public class ShapeTest extends TestCase {
 		SmallTriangle st = new SmallTriangle();
 		st.rotate(270);
 
-		assertEquals(st.getVertex(0).equals(new Position(0, -Utils.sqrt(2))),
-				true);
-		assertEquals(st.getVertex(1).equals(new Position(0, Utils.sqrt(2))),
-				true);
-		assertEquals(st.getVertex(2).equals(new Position(-Utils.sqrt(2), 0)),
-				true);
+		assertEquals(st.getVertex(0)
+				.equals(new Position(SmallTriangle.P0.y, 0)), true);
 
 	}
 
@@ -43,6 +38,28 @@ public class ShapeTest extends TestCase {
 		assertEquals(sq.getVertex(1).equals(new Position(4, 6)), true);
 		assertEquals(sq.getVertex(2).equals(new Position(4, 4)), true);
 		assertEquals(sq.getVertex(3).equals(new Position(6, 4)), true);
+
+	}
+
+	public void testScale() {
+		Square s1 = new Square(20, 20);
+		Square s2 = new Square(20, 20);
+		s2.scale(2);
+		assertEquals(s1.getCenter().equals(s2.getCenter()), true);
+
+	}
+
+	public void testInside() {
+
+		Square s1 = new Square(2, 2);
+		assertEquals(s1.isInside(new Position(2, 2)), true);
+		assertEquals(s1.isInside(new Position(4, 4)), false);
+		assertEquals(s1.isInside(new Position(3, 3)), true);
+		assertEquals(s1.isInside(new Position(1.5f, 1.5f)), true);
+
+		SmallTriangle st = new SmallTriangle();
+		assertEquals(st.isInside(-1, -1), false);
+		assertEquals(st.isInside(-0.5f, -0.5f), false);
 
 	}
 

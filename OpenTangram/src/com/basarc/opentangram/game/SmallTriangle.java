@@ -4,6 +4,13 @@ import com.basarc.opentangram.util.Utils;
 
 public class SmallTriangle extends Shape {
 
+	// Initial (or default) vertices
+	public static final Position P0 = new Position(0, 2 * Utils.sqrt(2) / 3);
+	public static final Position P1 = new Position(-Utils.sqrt(2),
+			-Utils.sqrt(2) / 3);
+	public static final Position P2 = new Position(Utils.sqrt(2),
+			-Utils.sqrt(2) / 3);
+
 	public SmallTriangle() {
 		super();
 		initialize();
@@ -18,10 +25,15 @@ public class SmallTriangle extends Shape {
 		this(new Position(x, y));
 	}
 
+	public SmallTriangle(float scale, Position center) {
+		this(center);
+		scale(scale);
+	}
+
 	@Override
 	protected void initialize() {
-		createVertex(Utils.sqrt(2), 0);
-		createVertex(-Utils.sqrt(2), 0);
-		createVertex(0, -Utils.sqrt(2));
+		createVertex(P0);
+		createVertex(P1);
+		createVertex(P2);
 	}
 }

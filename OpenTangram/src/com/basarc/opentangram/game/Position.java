@@ -3,7 +3,8 @@ package com.basarc.opentangram.game;
 import com.basarc.opentangram.util.Utils;
 
 /**
- * This class can be considered as a vector and contains common operations.
+ * This class can be considered as a position vector and contains common vector
+ * operations.
  * 
  * @author basar
  * 
@@ -13,11 +14,11 @@ public class Position {
 	/**
 	 * x coordinate
 	 */
-	private float x;
+	public float x;
 	/**
 	 * y coordinate
 	 */
-	private float y;
+	public float y;
 
 	/**
 	 * Creates new position object. x=0 and y=0
@@ -89,8 +90,27 @@ public class Position {
 	 * @param scale Scale value
 	 */
 	public void scale(float scale) {
-		this.x = this.x * scale;
-		this.y = this.y * scale;
+		scale(new Position(0, 0), scale);
+	}
+
+	/**
+	 * Scales position
+	 * 
+	 * @param center
+	 * @param scale
+	 */
+	public void scale(Position center, float scale) {
+
+		Position temp = new Position(this);
+		temp.x = temp.x - center.x;
+		temp.y = temp.y - center.y;
+
+		temp.x = temp.x * scale;
+		temp.y = temp.y * scale;
+
+		this.x = temp.x + center.x;
+		this.y = temp.y + center.y;
+
 	}
 
 	/**
@@ -99,8 +119,8 @@ public class Position {
 	 * @param p
 	 */
 	public void add(Position p) {
-		this.x = this.x + p.getX();
-		this.y = this.y + p.getY();
+		this.x = this.x + p.x;
+		this.y = this.y + p.y;
 	}
 
 	/**
@@ -125,22 +145,9 @@ public class Position {
 		return Utils.sqrt(xMagnitude * xMagnitude + yMagnitude * yMagnitude);
 	}
 
-	/**
-	 * Value of x coordinate
-	 * 
-	 * @return
-	 */
-	public float getX() {
-		return this.x;
-	}
-
-	/**
-	 * Value of y coordinate
-	 * 
-	 * @return
-	 */
-	public float getY() {
-		return this.y;
+	@Override
+	public String toString() {
+		return "Position [x=" + x + ", y=" + y + "]";
 	}
 
 	@Override

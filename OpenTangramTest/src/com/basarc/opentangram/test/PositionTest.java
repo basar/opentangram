@@ -11,32 +11,32 @@ public class PositionTest extends TestCase {
 
 		Position p1 = new Position(1, 1);
 		p1.rotate(45);
-		assertEquals(p1.getX() == 0, true);
+		assertEquals(p1.x == 0, true);
 		double sqrt = Utils.sqrt(2);
-		assertEquals(p1.getY() == sqrt, true);
+		assertEquals(p1.y == sqrt, true);
 
 		Position p2 = new Position(3, 3);
 		p2.rotate(new Position(2, 2), 90);
-		assertEquals(p2.getX() == 1, true);
-		assertEquals(p2.getY() == 3, true);
+		assertEquals(p2.x == 1, true);
+		assertEquals(p2.y == 3, true);
 
 		Position p3 = new Position(1.2f, 1.2f);
 		p3.rotate(90);
-		assertEquals(p3.getX() == -1.2f, true);
-		assertEquals(p3.getY() == 1.2f, true);
+		assertEquals(p3.x == -1.2f, true);
+		assertEquals(p3.y == 1.2f, true);
 
 		Position p4 = new Position(3, -3);
 		p4.rotate(135);
-		assertEquals(p4.getX() == 0, true);
-		assertEquals(p4.getY() == p4.magnitude(), true);
+		assertEquals(p4.x == 0, true);
+		assertEquals(p4.y == p4.magnitude(), true);
 	}
 
 	public void testScale() {
 
 		Position p1 = new Position(3, 3);
 		p1.scale(5);
-		assertEquals(p1.getX() == 15, true);
-		assertEquals(p1.getY() == 15, true);
+		assertEquals(p1.x == 15, true);
+		assertEquals(p1.y == 15, true);
 
 	}
 

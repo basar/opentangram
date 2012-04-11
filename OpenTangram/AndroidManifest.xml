@@ -8,16 +8,25 @@
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+
+        <!-- Launcher activity -->
         <activity
             android:name=".OpenTangramActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Play field activity -->
+        <activity
+            android:name=".PlayFieldActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
