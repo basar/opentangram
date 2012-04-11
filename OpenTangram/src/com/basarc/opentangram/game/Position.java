@@ -9,7 +9,7 @@ import com.basarc.opentangram.util.Utils;
  * @author basar
  * 
  */
-public class Position {
+public class Position {dfdf
 
 	/**
 	 * x coordinate
