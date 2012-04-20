@@ -23,6 +23,11 @@ public abstract class Shape {
 	protected Position center;
 
 	/**
+	 * identity
+	 */
+	private int tag;
+
+	/**
 	 * default constructor
 	 */
 	public Shape() {
@@ -185,6 +190,14 @@ public abstract class Shape {
 		return center;
 	}
 
+	public int getTag() {
+		return tag;
+	}
+
+	public void setTag(int tag) {
+		this.tag = tag;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -242,4 +255,10 @@ public abstract class Shape {
 
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "Shape [vertices=" + vertices + ", center=" + center + "]";
+	}
+
 }
