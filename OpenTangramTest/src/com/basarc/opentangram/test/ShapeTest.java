@@ -27,6 +27,22 @@ public class ShapeTest extends TestCase {
 		assertEquals(st.getVertex(0)
 				.equals(new Position(SmallTriangle.P0.y, 0)), true);
 
+		sq = new Square();
+		sq.rotate(90);
+		assertEquals(sq.getCurrentAngle() == 90, true);
+
+		sq.rotate(10.5f);
+		assertEquals(sq.getCurrentAngle() == 100.5f, true);
+
+		sq.rotate(-100.5f);
+		assertEquals(sq.getCurrentAngle() == 0f, true);
+
+		sq.rotate(-90f);
+		assertEquals(sq.getCurrentAngle() == 270f, true);
+
+		sq.rotate(-270f);
+		assertEquals(sq.getCurrentAngle() == 0, true);
+
 	}
 
 	public void testChangePosition() {
@@ -108,4 +124,5 @@ public class ShapeTest extends TestCase {
 		assertEquals(mt.calculateArea() == 4, true);
 
 	}
+
 }

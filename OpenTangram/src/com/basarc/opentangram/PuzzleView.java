@@ -13,12 +13,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.basarc.opentangram.game.Position;
 import com.basarc.opentangram.game.PuzzleBoard;
 import com.basarc.opentangram.game.Shape;
 
 public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
-
-	private Context context;
 
 	private PuzzleThread thread;
 
@@ -93,7 +92,7 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 		 */
 		private Bitmap backgroundImage;
 
-		PuzzleBoard puzzleBoard;
+		private PuzzleBoard puzzleBoard;
 
 		private int canvasHeight;
 
@@ -107,11 +106,31 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 
 		float lastDownY = 0;
 
+		float lastMoveX = 0;
+
+		float lastMoveY = 0;
+
+		boolean rotatable = false;
+
+		boolean movable = false;
+
+		boolean isMoving = false;
+
+		int minRadius = 0;
+
+		int maxRadius = 0;
+
+		int rotationAngle = 0;
+
+		boolean firstAngleControl = false;
+
+		// 1 specifies left rotation -1 specifies right rotation
+		int direction = 0;
+
 		public PuzzleThread(SurfaceHolder surfaceHolder, Context cntx) {
 
 			this.surfaceHolder = surfaceHolder;
 
-			context = cntx;
 			Resources resources = cntx.getResources();
 
 			backgroundImage = BitmapFactory.decodeResource(resources,
@@ -123,12 +142,16 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 			puzzleBoard = PuzzleBoard.getInstance();
 			puzzleBoard.initialize(canvasWidth, canvasHeight);
 
+			minRadius = puzzleBoard.getScale() * 2;
+			maxRadius = minRadius + 40;
+
 		}
 
 		private void doDraw(Canvas canvas) {
 
 			canvas.drawBitmap(backgroundImage, 0, 0, null);
 			drawShapes(canvas);
+			drawRotationCircle(canvas);
 
 		}
 
@@ -137,18 +160,47 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 			Paint p = new Paint();
 			p.setAntiAlias(true);
 
-			for (int i = 0; i < 4; i++) {
+			int size = puzzleBoard.getShapes().size();
+
+			for (int i = 0; i < size; i++) {
 
 				Shape shape = puzzleBoard.getShape(i);
-
 				Path path = createPath(shape);
-				p.setColor(Color.GREEN);
+
+				if (shape.equals(puzzleBoard.getSelectedShape())) {
+					p.setColor(Color.BLUE);
+				} else {
+					p.setColor(Color.GREEN);
+				}
+
 				p.setStyle(Paint.Style.FILL);
 				c.drawPath(path, p);
 				p.setStyle(Paint.Style.STROKE);
 				p.setColor(Color.BLACK);
 				p.setStrokeWidth(2);
 				c.drawPath(path, p);
+
+			}
+		}
+
+		private void drawRotationCircle(Canvas c) {
+
+			// To prevent to draw circle during the moving
+			if (isMoving)
+				return;
+
+			Paint p = new Paint();
+			p.setAntiAlias(true);
+			p.setColor(Color.BLACK);
+			p.setStyle(Paint.Style.STROKE);
+
+			Shape selected = puzzleBoard.getSelectedShape();
+
+			if (selected != null) {
+				c.drawCircle(selected.getCenter().x, selected.getCenter().y,
+						minRadius, p);
+				c.drawCircle(selected.getCenter().x, selected.getCenter().y,
+						maxRadius, p);
 			}
 		}
 
@@ -171,19 +223,111 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 
 		public void onActionDown(MotionEvent event) {
 
+			lastDownX = event.getX();
+			lastDownY = event.getY();
+
+			lastMoveX = lastDownX;
+			lastMoveY = lastDownY;
+
+			Shape selected = puzzleBoard.getSelectedShape();
+
+			if (selected != null) {
+				if (isRotationArea(selected)) {
+					movable = false;
+					rotatable = true;
+					firstAngleControl = true;
+					return;
+				}
+			}
+
+			Shape shape = puzzleBoard.getShape(lastDownX, lastDownY);
+
+			if (shape != null) {
+				puzzleBoard.setSelectedShape(shape);
+				movable = true;
+				rotatable = false;
+				changeDrawingPriority();
+				return;
+			}
+
+			// reset states
+			rotatable = false;
+			movable = false;
+			firstAngleControl = false;
+			puzzleBoard.setSelectedShape(null);
+		}
+
+		public void onActionMove(MotionEvent event) {
+
 			float x = event.getX();
 			float y = event.getY();
 
-			lastDownX = x;
-			lastDownY = y;
+			if (movable) {
+				dragShape(x, y);
+			}
 
-			puzzleBoard.setSelectedShape(x, y);
-			changeDrawingPriority();
+			if (rotatable) {
+				rotateShape(x, y);
+			}
+
+			lastMoveX = x;
+			lastMoveY = y;
+
+		}
+
+		public void onActionUp(MotionEvent event) {
+
+			if (rotatable) {
+				puzzleBoard.roundedRotateSelectedShape(direction);
+			}
+
+			isMoving = false;
+			direction = 0;
+			rotationAngle = 0;
+		}
+
+		private void dragShape(float x, float y) {
+
+			puzzleBoard.dragSelectedShapeTo(x - lastMoveX, y - lastMoveY);
+			isMoving = true;
+
+		}
+
+		private void rotateShape(float x, float y) {
+
+			Shape selected = puzzleBoard.getSelectedShape();
+			if (selected == null)
+				return;
+
+			Position center = selected.getCenter();
+
+			Position p1 = new Position(lastDownX - center.x, lastDownY
+					- center.y);
+			p1.normalize();
+
+			Position p2 = new Position(x - center.x, y - center.y);
+			p2.normalize();
+
+			int lastRotatedAngle = rotationAngle;
+			rotationAngle = (int) p1.calculateAngle(p2);
+
+			puzzleBoard.rotateSelectedShape(rotationAngle - lastRotatedAngle);
+
+			if (firstAngleControl) {
+				firstAngleControl = false;
+				if (rotationAngle > 180) {
+					direction = -1;
+				} else {
+					direction = 1;
+				}
+			}
+
 		}
 
 		private void changeDrawingPriority() {
 
 			synchronized (surfaceHolder) {
+
 				// selected shape index
 				int index = 0;
 				// size
@@ -206,17 +350,18 @@ public class PuzzleView extends SurfaceView implements SurfaceHolder.Callback {
 
 		}
 
-		public void onActionMove(MotionEvent event) {
+		private boolean isRotationArea(Shape s) {
 
-			float x = event.getX();
-			float y = event.getY();
-			puzzleBoard.dragSelectedShapeTo(x - lastDownX, y - lastDownY);
-			lastDownX = x;
-			lastDownY = y;
-		}
+			boolean result = false;
 
-		public void onActionUp(MotionEvent event) {
-			// puzzleBoard.setSelectedShape(null);
+			Position p = new Position(s.getCenter().x - lastDownX,
+					s.getCenter().y - lastDownY);
+			float magnitude = p.magnitude();
+			if (magnitude >= minRadius && magnitude <= maxRadius) {
+				result = true;
+			}
+
+			return result;
 		}
 
 		public void setRunning(boolean run) {

@@ -21,6 +21,15 @@ public class Utils {
 		return round(result);
 	}
 
+	public static float arccos(float value) {
+		float result = 0;
+		if (value > 1 || value < -1) {
+			throw new IllegalArgumentException("Value must be between -1 and 1");
+		}
+		result = (float) Math.acos(value);
+		return round(result);
+	}
+
 	public static float sqrt(float value) {
 		return (float) Math.sqrt(value);
 	}

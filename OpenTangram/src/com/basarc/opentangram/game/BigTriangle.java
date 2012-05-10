@@ -32,9 +32,9 @@ public class BigTriangle extends Shape {
 
 	@Override
 	protected void initialize() {
-		createVertex(2 * Utils.sqrt(2), 0);
-		createVertex(-2 * Utils.sqrt(2), 0);
-		createVertex(0, -2 * Utils.sqrt(2));
+		createVertex(P0);
+		createVertex(P1);
+		createVertex(P2);
 	}
 
 }

@@ -114,7 +114,7 @@ public class Position {
 	}
 
 	/**
-	 * Adds another vector to this vector
+	 * Adds param vector to this vector
 	 * 
 	 * @param p
 	 */
@@ -124,25 +124,82 @@ public class Position {
 	}
 
 	/**
+	 * Multiplies with scalar
+	 * 
+	 * @param scalar
+	 */
+	public void multiply(float scalar) {
+		this.x = this.x * scalar;
+		this.y = this.y * scalar;
+	}
+
+	/**
 	 * Calculates vector magnitude
 	 * 
 	 * @return magnitude of the vector
 	 */
 	public float magnitude() {
-		return distance(new Position(0, 0), this);
+		return this.distance(new Position(0, 0));
+	}
+
+	/**
+	 * Normalize the vector
+	 */
+	public void normalize() {
+		float length = magnitude();
+		this.x = this.x / length;
+		this.y = this.y / length;
 	}
 
 	/**
 	 * Calculates distance
 	 * 
-	 * @param p1 started point
-	 * @param p2 finished point (or vice versa)
-	 * @return magnitude of the vector
+	 * @param p
+	 * @return
 	 */
-	public static float distance(Position p1, Position p2) {
-		float xMagnitude = Math.abs(p1.x - p2.x);
-		float yMagnitude = Math.abs(p1.y - p2.y);
+	private float distance(Position p) {
+		float xMagnitude = Math.abs(this.x - p.x);
+		float yMagnitude = Math.abs(this.y - p.y);
 		return Utils.sqrt(xMagnitude * xMagnitude + yMagnitude * yMagnitude);
+	}
+
+	/**
+	 * Calculates angle between two vectors
+	 * 
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
+	public float calculateAngle(Position p) {
+
+		if (p == null)
+			throw new IllegalArgumentException(
+					"Param vector should not be null");
+
+		Position zeroVect = new Position();
+
+		if (this.equals(zeroVect) || p.equals(zeroVect))
+			throw new IllegalArgumentException(
+					"Vectors must be different than zero vector");
+
+		float angle = (float) Math.atan2(perpDot(p), dot(p));
+
+		float degree = (float) Math.toDegrees(angle);
+
+		if (degree < 0) {
+			degree = 360 + degree;
+		}
+
+		return degree;
+
+	}
+
+	private float dot(Position p) {
+		return this.x * p.x + this.y * p.y;
+	}
+
+	private float perpDot(Position p) {
+		return this.x * p.y - this.y * p.x;
 	}
 
 	@Override

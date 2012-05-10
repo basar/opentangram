@@ -21,6 +21,8 @@ public class PuzzleBoard {
 
 	private Shape selected;
 
+	private final int roundRotationValue = 45;
+
 	private PuzzleBoard() {
 
 	}
@@ -46,7 +48,7 @@ public class PuzzleBoard {
 	private void createShapes() {
 
 		// scale value that used for all shapes
-		scale = Math.round(Math.max(height, width) / 25);
+		scale = Math.round(Math.max(height, width) / 22);
 
 		BigTriangle bt1 = new BigTriangle(scale, new Position(scale
 				+ (scale * 2), scale - (scale / 2)));
@@ -62,14 +64,30 @@ public class PuzzleBoard {
 				/ 2));
 		sqr.setTag(2);
 
-		Parallelogram po = new Parallelogram(scale, new Position(7 * scale, 2
-				* scale + scale));
+		Parallelogram po = new Parallelogram(scale, new Position(6 * scale,
+				4 * scale));
 		po.setTag(3);
 
+		MediumTriangle mt = new MediumTriangle(scale, new Position(11 * scale,
+				scale + scale / 2));
+		mt.setTag(4);
+
+		SmallTriangle st1 = new SmallTriangle(scale, new Position(12 * scale,
+				4 * scale));
+		st1.setTag(5);
+
+		SmallTriangle st2 = new SmallTriangle(scale, new Position(9 * scale,
+				4 * scale));
+		st2.setTag(6);
+
+		shapes.add(st2);
+		shapes.add(st1);
+		shapes.add(mt);
 		shapes.add(po);
 		shapes.add(sqr);
 		shapes.add(bt1);
 		shapes.add(bt2);
+
 	}
 
 	public void setSelectedShape(float x, float y) {
@@ -102,6 +120,28 @@ public class PuzzleBoard {
 			selected.rotate(angleInDegree);
 	}
 
+	public void roundedRotateSelectedShape(int direction) {
+
+		if (selected != null) {
+
+			int curAngle = (int) selected.getCurrentAngle();
+			int mod = curAngle % roundRotationValue;
+
+			if (mod == 0)
+				return;
+
+			if (direction == -1) {
+				selected.rotate(-mod);
+			}
+
+			if (direction == 1) {
+				selected.rotate(roundRotationValue - mod);
+			}
+
+		}
+
+	}
+
 	public void setSelectedShape(Shape selected) {
 		this.selected = selected;
 	}
@@ -123,6 +163,10 @@ public class PuzzleBoard {
 
 	public ArrayList<Shape> getShapes() {
 		return shapes;
+	}
+
+	public int getScale() {
+		return this.scale;
 	}
 
 }

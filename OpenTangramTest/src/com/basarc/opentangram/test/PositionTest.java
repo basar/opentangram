@@ -51,4 +51,34 @@ public class PositionTest extends TestCase {
 
 	}
 
+	public void testAngle() {
+
+		Position p1 = new Position(1, 0);
+		Position p2 = new Position(0, 5);
+		float angle = p1.calculateAngle(p2);
+		assertEquals(angle == 90, true);
+
+		Position p3 = new Position(-1, 0);
+		angle = p1.calculateAngle(p3);
+		assertEquals(angle == 180, true);
+
+		Position p4 = new Position(-1, -1);
+		angle = p4.calculateAngle(p1);
+		assertEquals(angle == 135, true);
+
+		angle = p1.calculateAngle(p1);
+		assertEquals(angle == 0, true);
+
+		Position p5 = new Position(-2, 0);
+		Position p6 = new Position(-2, -2);
+		angle = p5.calculateAngle(p6);
+		assertEquals(angle == 45, true);
+
+		angle = p1.calculateAngle(new Position(0, -1));
+		assertEquals(angle == 270, true);
+
+		angle = p1.calculateAngle(new Position(1, -1));
+		assertEquals(angle == 315, true);
+
+	}
 }

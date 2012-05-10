@@ -18,7 +18,7 @@ public abstract class Shape {
 	protected ArrayList<Position> vertices;
 
 	/**
-	 * center point
+	 * center point of the polygon
 	 */
 	protected Position center;
 
@@ -28,7 +28,12 @@ public abstract class Shape {
 	private int tag;
 
 	/**
-	 * default constructor
+	 * current rotation angle
+	 */
+	private float currentAngle;
+
+	/**
+	 * default constructor creates zero vector
 	 */
 	public Shape() {
 		vertices = new ArrayList<Position>();
@@ -53,6 +58,7 @@ public abstract class Shape {
 	 * @param angleInDegree degree of the rotation
 	 */
 	public void rotate(float angleInDegree) {
+		changeRotationAngle(angleInDegree);
 		for (Position p : vertices) {
 			p.rotate(center, angleInDegree);
 		}
@@ -157,6 +163,14 @@ public abstract class Shape {
 		return count % 2 != 0;
 	}
 
+	private void changeRotationAngle(float angle) {
+		currentAngle = currentAngle + angle;
+		currentAngle = currentAngle % 360;
+		if (currentAngle < 0) {
+			currentAngle = 360 + currentAngle;
+		}
+	}
+
 	public boolean isInside(float x, float y) {
 		Position p = new Position(x, y);
 		return isInside(p);
@@ -176,6 +190,10 @@ public abstract class Shape {
 
 	public ArrayList<Position> getVertices() {
 		return vertices;
+	}
+
+	public float getCurrentAngle() {
+		return currentAngle;
 	}
 
 	public Position getVertex(int index) {
